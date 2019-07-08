@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Controle de Ponto</title>
+<link href="modal.css" rel="stylesheet" />
+
+</head>
+<body>
+	<div th:insert="header"></div>
+
+	<div class="container">
+		<h3 class="modal-header modal-header-warning">
+			<i class="glyphicon glyphicon-pencil"></i> Criar / Editar Funcionário
+		</h3>
+
+		<div class="modal-dialog modal-content">
+			<form role="form" action="/salvarFuncionario" method="post" id="form"
+				th:object="${funcionario}" class="well form-horizontal">
+				<input type="hidden" id="idFuncionario" th:field="*{codigo}" />
+				<div class="modal-body">
+					<fieldset class="form-group">
+						<legend>Dados Pessoais</legend>
+						<div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Matrícula</label>
+								<div class="col-md-3 inputGroupContainer">
+									<div class="input-group">
+										<input type="text" id="matricula" name="matricula" size="50"
+											placeholder="Matrícula" th:field="*{matricula}"
+											class="form-control" required="required"
+											th:errorclass="fieldError"> <span class="fieldError"
+											th:if="${#fields.hasErrors('matricula')}"
+											th:errors="*{matricula}"></span>
+									</div>
+								</div>
+								<label class="col-md-2 control-label">CPF</label>
+								<div class="col-md-4 inputGroupContainer">
+									<div class="input-group">
+										<input type="text" id="cpf" name="cpf" size="15"
+											placeholder="CPF" th:field="*{cpf}" class="form-control"
+											required="required" th:errorclass="fieldError"> <span
+											class="fieldError" th:if="${#fields.hasErrors('cpf')}"
+											th:errors="*{cpf}"></span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Nome</label>
+								<div class="col-md-9 inputGroupContainer">
+									<div class="input-group">
+										<input type="text" id="nome" name="nome" size="100"
+											placeholder="Nome" th:field="*{nome}" class="form-control"
+											required="required" th:errorclass="fieldError"> <span
+											class="fieldError" th:if="${#fields.hasErrors('nome')}"
+											th:errors="*{nome}"></span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Departamento</label>
+								<div class="col-md-9 inputGroupContainer">
+									<div class="input-group">
+										<select th:field="*{departamento}" class="form-control">
+											<option value="-1">Selecione um departamento</option>
+											<option th:each="d : ${listaDepartamentos}"
+												th:text="${d.nome}" th:value="${d.codigo}"></option>
+										</select> <span class="error"
+											th:if="${#fields.hasErrors('departamento')}"
+											th:errors="*{departamento}"></span>
+
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Cargo</label>
+								<div class="col-md-9 inputGroupContainer">
+									<div class="input-group">
+										<select th:field="*{cargo}" class="form-control">
+											<option value="-1">Selecione um cargo</option>
+											<option th:each="c : ${listaCargos}" th:text="${c.descricao}"
+												th:value="${c.codigo}"></option>
+										</select> <span class="error" th:if="${#fields.hasErrors('cargo')}"
+											th:errors="*{cargo}"></span>
+
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Data Nascimento</label>
+								<div class="col-md-4 inputGroupContainer">
+									<div class="input-group">
+										<input type="date" pattern="yyyy-MM-dd" id="dataNascimento"
+											name="dataNascimento" placeholder="Data de nascimento"
+											th:field="*{dataNascimento}" class="form-control"
+											required="required" th:errorclass="fieldError"> <span
+											class="fieldError"
+											th:if="${#fields.hasErrors('dataNascimento')}"
+											th:errors="*{dataNascimento}"></span>
+									</div>
+								</div>
+								<label class="col-md-2 control-label">Salário</label>
+								<div class="col-md-3 inputGroupContainer">
+									<div class="input-group">
+										<input type="text" id="salario" name="salario"
+											placeholder="Salário" th:field="*{salario}"
+											class="form-control" required="required"> <span
+											class="error" th:if="${#fields.hasErrors('salario')}"
+											th:errors="*{salario}"></span>
+
+									</div>
+								</div>
+
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label">Empresa</label>
+								<div class="col-md-9 inputGroupContainer">
+									<div class="input-group">
+										<select th:field="*{empresa}" class="form-control">
+											<option value="-1">Selecione uma empresa</option>
+											<option th:each="e : ${listaEmpresas}" th:text="${e.nome}"
+												th:value="${e.codigo}"></option>
+										</select> <span class="error" th:if="${#fields.hasErrors('empresa')}"
+											th:errors="*{empresa}"></span>
+									</div>
+								</div>
+							</div>
+					</fieldset>
+					<fieldset class="form-group">
+						<legend>Endereço</legend>
+						<div class="form-group">
+							<label class="col-md-3 control-label">Logradouro</label>
+							<div class="col-md-9 inputGroupContainer">
+								<div class="input-group">
+									<input type="text" id="logradouro" name="logradouro" size="100"
+										placeholder="Logradouro" th:field="*{endereco.logradouro}"
+										class="form-control" required="required"> <span
+										class="error"
+										th:if="${#fields.hasErrors('endereco.logradouro')}"
+										th:errors="*{endereco.logradouro}"></span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">Número</label>
+							<div class="col-md-3 inputGroupContainer">
+								<div class="input-group">
+									<input type="text" id="numero" name="numero"
+										placeholder="Número" th:field="*{endereco.numero}"
+										class="form-control" required="required"> <span
+										class="error" th:if="${#fields.hasErrors('endereco.numero')}"
+										th:errors="*{endereco.numero}"></span>
+								</div>
+							</div>
+							<label class="col-md-2 control-label">Complemento</label>
+							<div class="col-md-4 inputGroupContainer">
+								<div class="input-group">
+									<input type="text" id="complemento" name="complemento"
+										placeholder="Complemento" th:field="*{endereco.complemento}"
+										class="form-control"> <span
+										class="error"
+										th:if="${#fields.hasErrors('endereco.complemento')}"
+										th:errors="*{endereco.complemento}"></span>
+								</div>
+							</div>
+
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">Bairro</label>
+							<div class="col-md-3 inputGroupContainer">
+								<div class="input-group">
+									<input type="text" id="bairro" name="bairro"
+										placeholder="Bairro" th:field="*{endereco.bairro}"
+										class="form-control" required="required"> <span
+										class="error" th:if="${#fields.hasErrors('endereco.bairro')}"
+										th:errors="*{endereco.bairro}"></span>
+								</div>
+							</div>
+							<label class="col-md-2 control-label">Cidade</label>
+							<div class="col-md-4 inputGroupContainer">
+								<div class="input-group">
+									<input type="text" id="cidade" name="cidade"
+										placeholder="Cidade" th:field="*{endereco.cidade}"
+										class="form-control" required="required"> <span
+										class="error" th:if="${#fields.hasErrors('endereco.cidade')}"
+										th:errors="*{endereco.cidade}"></span>
+								</div>
+							</div>
+
+						</div>
+						<div class="form-group">
+							<label class="col-md-3 control-label">CEP</label>
+							<div class="col-md-3 inputGroupContainer">
+								<div class="input-group">
+									<input type="text" id="cep" name="cep" placeholder="CEP"
+										th:field="*{endereco.cep}" class="form-control"
+										required="required"> <span class="error"
+										th:if="${#fields.hasErrors('endereco.cep')}"
+										th:errors="*{endereco.cep}"></span>
+								</div>
+							</div>
+							<label class="col-md-2 control-label">UF</label>
+							<div class="col-md-4 inputGroupContainer">
+								<div class="input-group">
+									<select th:field="*{endereco.uf}" class="form-control">
+										<option value="-1">Selecione um estado</option>
+										<option th:each="uf : ${listaUFs}" th:text="${uf}"
+											th:value="${uf}"></option>
+									</select> <span class="error"
+										th:if="${#fields.hasErrors('endereco.uf')}"
+										th:errors="*{endereco.uf}"></span>
+								</div>
+							</div>
+					</fieldset>
+				</div>
+		</div>
+		<div class="clearfix"></div>
+		<div class="modal-footer">
+			<button type="reset" class="btn btn-danger pull-center"
+				data-dismiss="modal">Limpar</button>
+			<button type="submit" class="btn btn-primary pull-right">Salvar</button>
+			<a href="/funcionarios" class="btn btn-warning pull-left">Lista
+				de Funcionários</a> <br />
+
+		</div>
+		<div class="clearfix"></div>
+		</form>
+	</div>
+	</div>
+</body>
+</html>

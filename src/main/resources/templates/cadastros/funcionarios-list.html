@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Vinezof - Cadastro de Produtos</title>
+<link href="modal.css" rel="stylesheet" />
+</head>
+<body>
+	<div th:insert="header"></div>
+	<div class="container">
+
+		<!-- Form para pesquisa funcionários  -->
+		<form th:action="@{/funcionarios}" method="post">
+			<h3 class="modal-header modal-header-warning">
+				<i class="glyphicon glyphicon-th-list"></i> Lista de Funcionários 
+				<span class="pull-right">
+					<input type="text" name="nomePesquisa"
+					id="nomePesquisa" placeholder="Digite um nome"
+					class="btn btn-default btn-sm" />
+					<button type="submit" class="btn btn-default btn-sm">
+						<span class="glyphicon glyphicon-search"></span> Pesquisar
+					</button>
+					</span>
+			</h3>
+		</form>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Matrícula</th>
+					<th>Cargo</th>
+					<th>Departamento</th>
+					<th>Editar</th>
+					<th>Remover</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="func : ${listaFuncionarios}">
+					<td th:text="${func.nome}"></td>
+					<td th:text="${func.matricula}"></td>
+					<td th:text="${func.cargo.descricao}"></td>
+					<td th:text="${func.departamento.nome}"></td>
+					<td><a class="btn btn-warning"
+						th:href="|/funcionariosForm?codigo=${func.codigo}|">Editar</a></td>
+					<td><a class="btn btn-warning"
+						th:href="|/funcionariosRem?codigo=${func.codigo}|">Remover</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<div>
+			<a class="btn btn-warning" th:href="@{/funcionariosForm}"> <i
+				class="glyphicon glyphicon-plus"></i> Novo Funcionário
+			</a>
+		</div>
+		<h6>
+			<a href="/vinezof">Home</a>
+		</h6>
+	</div>
+
+</body>
+</html>

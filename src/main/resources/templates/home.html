@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Gestão de Pessoas :: Home</title>
+    <div th:replace="header :: headerBlock"></div>
+</head>
+<body>
+
+	<div th:replace="header :: navBar" ></div>
+	<!-- /.container -->
+		<div th:if="${session.usuarioLogado}" th:text="${session.usuarioLogado.nome}"></div>
+	
+
+</body>
+</html>
